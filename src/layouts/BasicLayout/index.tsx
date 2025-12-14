@@ -6,10 +6,11 @@ import {
 } from "@ant-design/icons";
 import { ProLayout } from "@ant-design/pro-components";
 import { Dropdown, Input } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import GlobalFooter from "@/components/GlobalFooter";
 
 const SearchInput = () => {
   return (
@@ -111,19 +112,9 @@ export default function BasicLayout({ children }: Props) {
           if (_.isMobile) return defaultDom;
           return <>{defaultDom}</>;
         }}
-        menuFooterRender={(props) => {
-          if (props?.collapsed) return undefined;
-          return (
-            <div
-              style={{
-                textAlign: "center",
-                paddingBlockStart: 12,
-              }}
-            >
-              <div>© 2021 Made with love</div>
-              <div>by Ant Design</div>
-            </div>
-          );
+        // 底部栏
+        footerRender={() => {
+          return <GlobalFooter />;
         }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuDataRender={() => [
