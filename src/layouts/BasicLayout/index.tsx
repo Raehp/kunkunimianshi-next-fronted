@@ -6,16 +6,19 @@ import {
 } from "@ant-design/icons";
 import { ProLayout } from "@ant-design/pro-components";
 import { Dropdown, Input } from "antd";
-import React from "react";
+import React, {useState} from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import "./index.css";
 import GlobalFooter from "@/components/GlobalFooter";
 import { menus } from "../../../config/menu";
-import {listQuestionBankVoByPageUsingPost} from "@/api/questionBankController";
-import {useSelector} from "react-redux";
-import {RootState} from "@/stores";
+import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
+import { useSelector } from "react-redux";
+import { RootState } from "@/stores";
+import getAccessibleMenus from "@/access/menuAccess";
+import MdEditor from "@/components/MdEditor";
+import MdViewer from "@/components/MdViewer";
 
 const SearchInput = () => {
   return (
@@ -51,7 +54,9 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
-  const loginUser = useSelector((state: RootState) => state.loginUser)
+  const loginUser = useSelector((state: RootState) => state.loginUser);
+
+  const [text, setText] = useState<String>("");
 
   return (
     <div
@@ -119,7 +124,7 @@ export default function BasicLayout({ children }: Props) {
         }}
         onMenuHeaderClick={(e) => console.log(e)}
         menuDataRender={() => {
-          return menus;
+          return getAccessibleMenus(loginUser, menus);
         }}
         // 菜单项如何渲染
         menuItemRender={(item, dom) => (
@@ -128,6 +133,8 @@ export default function BasicLayout({ children }: Props) {
           </Link>
         )}
       >
+        <MdEditor value={text}  onChange={setText}/>
+        <MdViewer value={text} />
         {children}
       </ProLayout>
     </div>
