@@ -10,7 +10,10 @@ import React from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import "./index.css";
 import GlobalFooter from "@/components/GlobalFooter";
+import { menus } from "../../../config/menu";
+import {listQuestionBankVoByPageUsingPost} from "@/api/questionBankController";
 
 const SearchInput = () => {
   return (
@@ -34,7 +37,6 @@ const SearchInput = () => {
         }}
         prefix={<SearchOutlined />}
         placeholder="搜索题目"
-        variant="borderless"
       />
     </div>
   );
@@ -46,6 +48,7 @@ interface Props {
 
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
+
   return (
     <div
       id="basicLayout"
@@ -99,34 +102,21 @@ export default function BasicLayout({ children }: Props) {
           ];
         }}
         headerTitleRender={(logo, title, _) => {
-          const defaultDom = (
+          return (
             <a>
               {logo}
               {title}
             </a>
           );
-          if (typeof window === "undefined") return defaultDom;
-          if (document.body.clientWidth < 1400) {
-            return defaultDom;
-          }
-          if (_.isMobile) return defaultDom;
-          return <>{defaultDom}</>;
         }}
         // 底部栏
         footerRender={() => {
           return <GlobalFooter />;
         }}
         onMenuHeaderClick={(e) => console.log(e)}
-        menuDataRender={() => [
-          {
-            path: "/questions",
-            name: "题目",
-          },
-          {
-            path: "/banks",
-            name: "题库",
-          },
-        ]}
+        menuDataRender={() => {
+          return menus;
+        }}
         // 菜单项如何渲染
         menuItemRender={(item, dom) => (
           <Link href={item.path || "/"} target={item.target}>
