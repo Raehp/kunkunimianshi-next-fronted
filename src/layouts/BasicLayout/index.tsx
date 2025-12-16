@@ -133,8 +133,6 @@ export default function BasicLayout({ children }: Props) {
           </Link>
         )}
       >
-        <MdEditor value={text}  onChange={setText}/>
-        <MdViewer value={text} />
         {children}
       </ProLayout>
     </div>
