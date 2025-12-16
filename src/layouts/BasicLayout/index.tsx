@@ -14,6 +14,8 @@ import "./index.css";
 import GlobalFooter from "@/components/GlobalFooter";
 import { menus } from "../../../config/menu";
 import {listQuestionBankVoByPageUsingPost} from "@/api/questionBankController";
+import {useSelector} from "react-redux";
+import {RootState} from "@/stores";
 
 const SearchInput = () => {
   return (
@@ -49,6 +51,8 @@ interface Props {
 export default function BasicLayout({ children }: Props) {
   const pathname = usePathname();
 
+  const loginUser = useSelector((state: RootState) => state.loginUser)
+
   return (
     <div
       id="basicLayout"
@@ -67,9 +71,9 @@ export default function BasicLayout({ children }: Props) {
           pathname,
         }}
         avatarProps={{
-          src: "https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg",
+          src: loginUser.userAvatar || "/assets/logo.png",
           size: "small",
-          title: "ikun",
+          title: loginUser.userName || "ikun",
           render: (props, dom) => {
             return (
               <Dropdown
